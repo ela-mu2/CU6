@@ -12,6 +12,14 @@ const { Schema, model } = mongoose;
     - `enrollmentCount`: (Number, default: 0) - The number of students enrolled
 */
 
+const CourseSchema = new Schema({
+    title: { type: String, required: true },
+    instructor: { type: Schema.Types.ObjectId, ref: "Instructor", required: true },
+    startDate: Date,
+    endDate: Date,
+    subject: String,
+    description: String,
+    enrollmentCount: { type: Number, default: 0 },
+});
 
-
-
+module.exports = model("Course", CourseSchema);

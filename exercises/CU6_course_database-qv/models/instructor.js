@@ -8,3 +8,12 @@ const { Schema, model } = mongoose;
     - `profile`: (String) - A brief description or biography of the instructor
     - `coursesTaught`: (Number, default: 0) - A count of the number of courses taught
 */
+
+const instructorSchema = new Schema({
+    name: { type: String, required: true },
+    qualification: String,
+    profile: String,
+    coursesTaught: { type: Number, default: 0 },
+});
+
+module.exports = model("Instructor", instructorSchema);
