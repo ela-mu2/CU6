@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const Blog = require("./models/Blog");
-const Comment = require('./models/Comment')
+const Comment = require("./models/Comment");
+
+app.use(express.json());
 
 mongoose
     .connect("mongodb://localhost:27017/advanced-mongoose")
@@ -13,35 +15,24 @@ mongoose
         console.log(err);
     });
 
-app.get("/", async (req, res) => {
-    const blogs = await Blog.find({});
-    res.json(blogs);
+app.get("/posts", async (req, res) => {
+    const allBlogPosts = await Blog.find({}).populate("comments");
+    res.json(allBlogPosts);
 });
 
-app.get("/comment/:commentId", async (req, res) => {
-    const commentId = req.params.id
-    const comment = await Blog.find({ "comments._id": commentId })
-    res.json(comment)
-})
-
-app.post("/addBlogWithoutComments", async (req, res) => {
-    const blogWithoutComments = new Blog({
-        title: "New Blog without Comments",
-        author: "Josh Doe",
-        content: "Some new blog without comments inside",
-    });
-    await blogWithoutComments.save();
-    res.status(201).json(blogWithoutComments);
+app.post("/post", async (req, res) => {
+    const newBlogPost = new Blog(req.body);
+    await newBlogPost.save();
+    res.json(newBlogPost);
 });
-app.post("/addComment", async (req, res) => {
-    const newComment = new Blog({
-        user: "Adam",
-        content: "A comment with ObjectID Linking",
-        votes: 5000,
-        blog_id: "6a9648e4e4703ee31417e398"
-    });
+
+app.post("/post/:p_id/comment", async (req, res) => {
+    const p_id = req.params.p_id;
+    const newComment = new Comment(req.body);
     await newComment.save();
-    res.status(201).json(newComment);
+    // After you create the new comment, you need to add a link in the post data to link to the new comment
+    const blogPost = await Blog.findOneAndUpdate({ _id: p_id }, { $push: { comments: newComment._id } }, { new: true });
+    res.json(blogPost);
 });
 
 const PORT = 3000;
