@@ -8,25 +8,19 @@ const port = 5000;
 app.use(express.json());
 
 // instruction: setup cors
-
-
-
-
-
+app.use(cors());
 
 // instruction: setup MongoDB Connection
-
-
-
-
-
+mongoose
+    .connect("mongodb://localhost:27017/course_database")
+    .then(() => {
+        console.log("MongoDB Connected");
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 // instruction: setup routes
-
-
-
-
-
 
 app.get("/", (req, res) => {
     res.send("Good luck!");
