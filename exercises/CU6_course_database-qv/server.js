@@ -21,7 +21,11 @@ mongoose
     });
 
 // instruction: setup routes
+const coursesRouter = require("./routes/courses");
+const instructorsRouter = require("./routes/instructors");
 
+app.use("/courses", coursesRouter);
+app.use("/instructors", instructorsRouter);
 app.get("/", (req, res) => {
     res.send("Good luck!");
 });

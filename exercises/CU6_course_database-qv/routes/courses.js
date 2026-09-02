@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // instruction: import the course model
-const coursesController = require("../models/coursesController");
+const coursesController = require("../controllers/coursesController");
 
 /* 
     instruction: 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // instruction: import the instructor controller
-const instructorsController = require("../models/instructorsController");
+const instructorsController = require("../controllers/instructorsController");
 
 // instruction: GET /: List all instructors
 router.get("/", instructorsController.showAllInstructor);
